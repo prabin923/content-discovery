@@ -1,0 +1,16 @@
+{
+  "name": "content-discovery-platform",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build -w @discovery-hub/shared && npm run build -w backend && npm run build -w frontend",
+    "build:shared": "npm run build -w @discovery-hub/shared",
+    "dev:backend": "npm run dev -w backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "typecheck": "npm run build -w @discovery-hub/shared && npm run build -w backend && npm run build -w frontend"
+  }
+}
