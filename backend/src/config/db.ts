@@ -1,17 +1,8 @@
-import path from 'node:path';
 import { Pool } from 'pg';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-
-const databaseUrl = process.env.DATABASE_URL;
-
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL environment variable is required');
-}
+import { getDatabaseUrl } from './env';
 
 const pool = new Pool({
-  connectionString: databaseUrl,
+  connectionString: getDatabaseUrl(),
 });
 
 pool.on('error', (err) => {

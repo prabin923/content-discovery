@@ -1,14 +1,13 @@
+import './config/env';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import pool from './config/db';
 import authRoutes from './routes/auth';
 import contentRoutes from './routes/content';
 import userRoutes from './routes/users';
 import collectionRoutes from './routes/collections';
 import recommendationRoutes from './routes/recommendations';
 import { startContentSyncJob } from './jobs/contentSync';
-
-dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 5001;
@@ -19,12 +18,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.get('/health', (_req: Request, res: Response) => {
-  res.json({
-    status: 'ok',
-    message: 'Server is running',
-    timestamp: new Date().toISOString()
-  });
+app.get('/health', async (_req: Request, res: Response) => {
+  try {
+    await pool.query('SELECT 1');
+    res.json({
+      status: 'ok',
+      db: 'connected',
+      message: 'Server is running',
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: 'degraded',
+      db: 'disconnected',
+      message: error instanceof Error ? error.message : 'Database unavailable',
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
 app.use('/api/auth', authRoutes);

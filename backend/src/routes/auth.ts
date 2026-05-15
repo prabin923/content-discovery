@@ -130,7 +130,11 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    res.status(500).json({
+      error: 'Internal server error',
+      message: process.env.NODE_ENV === 'development' ? message : undefined,
+    });
   }
 });
 

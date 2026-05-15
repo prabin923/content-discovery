@@ -7,10 +7,17 @@
     "frontend"
   ],
   "scripts": {
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "db:setup": "psql -d postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'content_discovery'\" | grep -q 1 || createdb content_discovery && psql content_discovery -f db-schema.sql && npm run db:seed",
+    "db:seed": "psql content_discovery -f db-seed.sql",
+    "start": "concurrently -k -n backend,frontend -c blue,green \"npm run start -w backend\" \"npm run start -w frontend\"",
     "build": "npm run build -w @discovery-hub/shared && npm run build -w backend && npm run build -w frontend",
     "build:shared": "npm run build -w @discovery-hub/shared",
     "dev:backend": "npm run dev -w backend",
     "dev:frontend": "npm run dev -w frontend",
     "typecheck": "npm run build -w @discovery-hub/shared && npm run build -w backend && npm run build -w frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

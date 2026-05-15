@@ -28,7 +28,11 @@ function Stat({ label, value }: { label: string; value: number }) {
   );
 }
 
-export default function ContentDiscovery() {
+interface Props {
+  onRequireAuth?: () => void;
+}
+
+export default function ContentDiscovery({ onRequireAuth }: Props) {
   const [query, setQuery] = useState('technology');
   const [source, setSource] = useState<DiscoverSource>('all');
   const [loading, setLoading] = useState(false);
@@ -112,7 +116,12 @@ export default function ContentDiscovery() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {visibleItems.map((item) => (
-          <ContentCard key={item.sourceId} item={item} />
+          <ContentCard
+            key={item.sourceId}
+            item={item}
+            showSaveActions
+            onRequireAuth={onRequireAuth}
+          />
         ))}
       </div>
     </section>

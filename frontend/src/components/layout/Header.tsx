@@ -3,7 +3,7 @@
 import Button from '../common/Button';
 import { useAuth } from '../../hooks/useAuth';
 
-export type AppTab = 'discover' | 'collections' | 'foryou';
+export type AppTab = 'discover' | 'collections' | 'saved' | 'foryou' | 'profile';
 
 interface Props {
   activeTab: AppTab;
@@ -14,7 +14,9 @@ interface Props {
 const tabs: { id: AppTab; label: string }[] = [
   { id: 'discover', label: 'Discover' },
   { id: 'collections', label: 'Collections' },
+  { id: 'saved', label: 'Saved' },
   { id: 'foryou', label: 'For you' },
+  { id: 'profile', label: 'Profile' },
 ];
 
 export default function Header({ activeTab, onTabChange, onOpenAuth }: Props) {
@@ -28,7 +30,7 @@ export default function Header({ activeTab, onTabChange, onOpenAuth }: Props) {
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <nav className="flex rounded-lg bg-slate-100 p-1">
+        <nav className="flex flex-wrap rounded-lg bg-slate-100 p-1">
           {tabs.map((tab) => (
             <button
               key={tab.id}
