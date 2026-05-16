@@ -2,12 +2,11 @@
 
 import AnimateIn from './AnimateIn';
 
-const steps: Array<{ step: string; title: string; body: string; hint?: string }> = [
+const steps: Array<{ step: string; title: string; body: string }> = [
   {
     step: '01',
     title: 'Create your account',
     body: 'Register with email in under a minute. No credit card required.',
-    hint: 'Try the demo: admin@demo.com / password',
   },
   {
     step: '02',
@@ -57,11 +56,6 @@ export default function HowItWorksSection() {
                   <p className="mt-4 flex-1 text-base leading-relaxed text-slate-600 dark:text-slate-400">
                     {item.body}
                   </p>
-                  {item.hint ? (
-                    <p className="mt-5 rounded-lg border border-dashed border-indigo-200 bg-indigo-50/80 px-4 py-3 text-sm text-indigo-800 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200">
-                      {item.hint}
-                    </p>
-                  ) : null}
                 </article>
               </li>
             </AnimateIn>

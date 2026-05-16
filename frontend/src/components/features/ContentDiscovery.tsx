@@ -167,7 +167,7 @@ export default function ContentDiscovery({ onRequireAuth }: Props) {
           {mode === 'library'
             ? 'No library matches. Sync content via live discover or wait for the background sync job.'
             : source === 'youtube'
-              ? 'No videos found. Add YOUTUBE_API_KEY to backend/.env for YouTube results.'
+              ? 'No videos found. Configure a YouTube API key in your backend environment for video results.'
               : 'No results for this filter. Try another source or query.'}
         </p>
       ) : null}

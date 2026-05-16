@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: 'Do I need API keys?',
-    a: 'YouTube discovery requires YOUTUBE_API_KEY in backend/.env. Product Hunt and arXiv work without extra keys. The library and personalization features work once content is synced.',
+    a: 'YouTube discovery requires a YouTube API key in your server environment. Product Hunt and arXiv work without extra keys. The library and personalization features work once content is synced.',
   },
   {
     q: 'How does the For You feed work?',
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'Can I try it without signing up?',
-    a: 'You can browse the landing page and run live discover as a guest. Saving, collections, For You, and profile features require a free account. Demo login: admin@demo.com / password.',
+    a: 'You can browse the landing page and run live discover as a guest. Saving, collections, For You, and profile features require a free account you create yourself.',
   },
   {
     q: 'Is my data stored securely?',
