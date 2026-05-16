@@ -65,7 +65,7 @@ export async function apiRequest<T>(
       const server = response.headers.get('server') ?? '';
       if (server.includes('AirTunes')) {
         message =
-          'Port 5000 is used by macOS AirPlay. Start the API on port 5001 (see backend/.env) and set API_URL=http://localhost:5001 in frontend/.env.local';
+          'Port 5000 is used by macOS AirPlay. Start the API on port 5001 and set API_URL=http://localhost:5001 in your local frontend environment.';
       }
     }
     throw new ApiError(message, response.status);
