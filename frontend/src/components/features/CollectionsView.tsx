@@ -101,6 +101,28 @@ export default function CollectionsView({ onRequireAuth }: Props) {
     }
   };
 
+  const onRemoveItem = async (collectionId: number, contentId: number) => {
+    if (!user) {
+      onRequireAuth();
+      return;
+    }
+    try {
+      await apiRequest(`/api/collections/${collectionId}/items/${contentId}`, {
+        method: 'DELETE',
+        auth: true,
+      });
+      if (selectedId === collectionId) {
+        const data = await loadDetail(collectionId);
+        setDetail(data);
+      }
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        onRequireAuth();
+      }
+      setError((err as Error).message);
+    }
+  };
+
   const onVote = async (collectionId: number, voteType: 'upvote' | 'downvote') => {
     if (!user) {
       onRequireAuth();
@@ -260,15 +282,26 @@ export default function CollectionsView({ onRequireAuth }: Props) {
                     )}
                     <div className="min-w-0 flex-1">
                       <p className="text-xs capitalize text-indigo-600">{item.type}</p>
-                      <p className="font-medium text-slate-900">{item.title}</p>
-                      <a
-                        href={item.source_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-sm text-indigo-600 hover:underline"
-                      >
-                        Open source
-                      </a>
+                      <p className="font-medium text-slate-900 dark:text-slate-100">{item.title}</p>
+                      <div className="mt-1 flex flex-wrap gap-2">
+                        <a
+                          href={item.source_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm text-indigo-600 hover:underline dark:text-indigo-400"
+                        >
+                          Open source
+                        </a>
+                        {user?.id === detail.collection.curator_id ? (
+                          <button
+                            type="button"
+                            onClick={() => void onRemoveItem(detail.collection.id, item.content_id)}
+                            className="text-sm text-red-600 hover:underline"
+                          >
+                            Remove
+                          </button>
+                        ) : null}
+                      </div>
                     </div>
                   </li>
                 ))}

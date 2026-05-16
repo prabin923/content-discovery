@@ -1,14 +1,21 @@
 import { Router, Request, Response } from 'express';
 import pool from '../config/db';
 import { authMiddleware } from '../middleware/authMiddleware';
+import { optionalAuthMiddleware } from '../middleware/optionalAuthMiddleware';
+import { validateBody, validateQuery } from '../middleware/validate';
+import { ingestContentSchema, searchQuerySchema } from '../validation/schemas';
 import { discoverYouTubeContent } from '../services/youtubeService';
 import { discoverProducts } from '../services/productService';
 import { discoverPapers } from '../services/paperService';
 import type { ContentItem } from '@discovery-hub/shared';
 import { categorizeContent, generatePseudoEmbedding } from '../services/aiService';
 import { upsertContentItem } from '../services/contentRepository';
+import { searchContent } from '../services/contentSearch';
+import { recordView } from '../services/interactionService';
+import { rateLimit } from '../middleware/rateLimit';
 
 const router = Router();
+const discoverRateLimit = rateLimit({ windowMs: 60 * 1000, max: 40 });
 
 function parseLimit(raw: unknown): number {
   const numeric = Number(raw);
@@ -64,13 +71,45 @@ async function fetchSources(
   return { items: resultSets.flat(), errors };
 }
 
-router.post('/ingest', authMiddleware, async (req: Request, res: Response) => {
-  const body = req.body as Partial<ContentItem>;
+router.get('/search', validateQuery(searchQuerySchema), async (req: Request, res: Response) => {
+  const query = (req as Request & { validatedQuery: { q: string; type?: string; page?: number; limit?: number } })
+    .validatedQuery;
 
-  if (!body.type || !body.title || !body.sourceUrl || !body.sourceId || !body.sourcePlatform) {
-    res.status(400).json({ error: 'type, title, sourceUrl, sourceId, and sourcePlatform are required' });
-    return;
+  try {
+    const { items, meta } = await searchContent({
+      q: query.q,
+      type: query.type ?? null,
+      page: query.page,
+      limit: query.limit,
+    });
+
+    res.status(200).json({
+      query: { q: query.q, type: query.type ?? null, page: meta.page, limit: meta.limit },
+      total: meta.total,
+      page: meta.page,
+      limit: meta.limit,
+      totalPages: meta.totalPages,
+      items,
+    });
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ error: 'Failed to search content library' });
   }
+});
+
+router.post('/ingest', authMiddleware, validateBody(ingestContentSchema), async (req: Request, res: Response) => {
+  const body = req.body as {
+    type: ContentItem['type'];
+    title: string;
+    description?: string;
+    thumbnailUrl?: string | null;
+    sourceUrl: string;
+    sourcePlatform: string;
+    sourceId: string;
+    tags?: string[];
+    publishedDate?: string | null;
+    metadata?: Record<string, unknown>;
+  };
 
   try {
     const id = await upsertContentItem({
@@ -81,7 +120,7 @@ router.post('/ingest', authMiddleware, async (req: Request, res: Response) => {
       sourceUrl: body.sourceUrl,
       sourcePlatform: body.sourcePlatform,
       sourceId: body.sourceId,
-      tags: Array.isArray(body.tags) ? body.tags : [],
+      tags: body.tags ?? [],
       publishedDate: body.publishedDate ?? null,
       metadata: body.metadata ?? {},
     });
@@ -93,7 +132,29 @@ router.post('/ingest', authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-router.get('/discover', async (req: Request, res: Response) => {
+router.post('/:contentId/view', optionalAuthMiddleware, async (req: Request, res: Response) => {
+  const contentId = Number(req.params.contentId);
+  if (!Number.isInteger(contentId)) {
+    res.status(400).json({ error: 'Invalid content ID' });
+    return;
+  }
+
+  try {
+    const exists = await pool.query('SELECT id FROM content WHERE id = $1', [contentId]);
+    if (exists.rows.length === 0) {
+      res.status(404).json({ error: 'Content not found' });
+      return;
+    }
+
+    await recordView(contentId, req.userId);
+    res.status(200).json({ message: 'View recorded' });
+  } catch (error) {
+    console.error('View error:', error);
+    res.status(500).json({ error: 'Failed to record view' });
+  }
+});
+
+router.get('/discover', discoverRateLimit, async (req: Request, res: Response) => {
   try {
     const { q, limit, source } = parseQuery(req);
     const { items, errors } = await fetchSources(source, q, limit);

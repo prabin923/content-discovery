@@ -158,6 +158,40 @@ router.post('/:collectionId/items', authMiddleware, async (req: Request, res: Re
   }
 });
 
+router.delete('/:collectionId/items/:contentId', authMiddleware, async (req: Request, res: Response) => {
+  const collectionId = Number(req.params.collectionId);
+  const contentId = Number(req.params.contentId);
+
+  if (!Number.isInteger(collectionId) || !Number.isInteger(contentId)) {
+    res.status(400).json({ error: 'Valid collectionId and contentId are required' });
+    return;
+  }
+
+  try {
+    const ownerCheck = await pool.query('SELECT curator_id FROM collections WHERE id = $1', [collectionId]);
+
+    if (ownerCheck.rows.length === 0) {
+      res.status(404).json({ error: 'Collection not found' });
+      return;
+    }
+
+    if (ownerCheck.rows[0].curator_id !== req.userId) {
+      res.status(403).json({ error: 'Only the curator can modify this collection' });
+      return;
+    }
+
+    await pool.query(
+      `DELETE FROM collection_items WHERE collection_id = $1 AND content_id = $2`,
+      [collectionId, contentId]
+    );
+
+    res.status(200).json({ message: 'Item removed from collection' });
+  } catch (error) {
+    console.error('Remove collection item error:', error);
+    res.status(500).json({ error: 'Failed to remove collection item' });
+  }
+});
+
 router.post('/:collectionId/vote', authMiddleware, async (req: Request, res: Response) => {
   const collectionId = Number(req.params.collectionId);
   const { voteType } = req.body as { voteType?: 'upvote' | 'downvote' };

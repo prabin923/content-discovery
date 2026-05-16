@@ -4,8 +4,10 @@ import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import type { UserProfileResponse } from '@discovery-hub/shared';
 import { apiRequest, ApiError } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
+import type { ThemePreference } from '@discovery-hub/shared';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
+import { useTheme } from '@/lib/theme';
 
 interface Props {
   onRequireAuth: () => void;
@@ -15,6 +17,7 @@ const SUGGESTED_INTERESTS = ['technology', 'ai', 'research', 'startups', 'design
 
 export default function ProfileView({ onRequireAuth }: Props) {
   const { user, refreshProfile } = useAuth();
+  const { theme, setTheme } = useTheme();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [bio, setBio] = useState('');
@@ -156,6 +159,19 @@ export default function ProfileView({ onRequireAuth }: Props) {
             placeholder="technology, ai, research"
             className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2"
           />
+        </label>
+
+        <label className="block text-sm">
+          <span className="text-slate-600 dark:text-slate-400">Theme</span>
+          <select
+            value={theme}
+            onChange={(e) => setTheme(e.target.value as ThemePreference)}
+            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-950"
+          >
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
         </label>
 
         <div className="flex flex-wrap gap-2">

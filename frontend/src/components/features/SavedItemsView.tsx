@@ -73,7 +73,13 @@ export default function SavedItemsView({ onRequireAuth }: Props) {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
-          <ContentCard key={item.id ?? item.sourceId} item={item} showSaveActions onRequireAuth={onRequireAuth} />
+          <ContentCard
+            key={item.id ?? item.sourceId}
+            item={item}
+            showSaveActions
+            initialSaved
+            onRequireAuth={onRequireAuth}
+          />
         ))}
       </div>
     </section>

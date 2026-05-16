@@ -4,6 +4,8 @@ export type ContentSource = 'youtube' | 'products' | 'papers';
 
 export type DiscoverSource = ContentSource | 'all';
 
+export type DiscoverMode = 'live' | 'library';
+
 export interface ContentItem {
   id?: number;
   type: ContentType;
@@ -55,4 +57,22 @@ export interface DiscoverResponse {
   total: number;
   errors: string[];
   items: ContentItem[];
+}
+
+export interface SearchResponse {
+  query: {
+    q: string;
+    type: string | null;
+    page: number;
+    limit: number;
+  };
+  total: number;
+  items: DbContentRow[];
+}
+
+export interface PaginatedMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
 }

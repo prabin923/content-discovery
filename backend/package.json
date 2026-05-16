@@ -9,7 +9,7 @@
     "typecheck": "tsc --build --noEmit",
     "start": "node dist/server.js",
     "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +24,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "node-cron": "^4.2.1",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -32,11 +33,14 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.8.0",
     "@types/pg": "^8.20.0",
+    "@types/supertest": "^7.2.0",
     "eslint": "^10.3.0",
     "globals": "^17.6.0",
     "nodemon": "^3.1.14",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.2"
+    "typescript-eslint": "^8.59.2",
+    "vitest": "^4.1.6"
   }
 }
