@@ -3,8 +3,9 @@ import { Providers } from './providers';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Discovery Hub',
-  description: 'Find videos, products, and research papers in one personalized feed.',
+  title: 'Discovery Hub — Videos, products & research in one place',
+  description:
+    'Discover YouTube videos, Product Hunt launches, and arXiv papers. Save, curate collections, and get a personalized For You feed.',
 };
 
 const themeInitScript = `

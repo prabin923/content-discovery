@@ -14,3 +14,117 @@
 body {
   @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
 }
+
+/* Landing page animations */
+@keyframes landing-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-14px) scale(1.02);
+  }
+}
+
+@keyframes landing-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes landing-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes landing-shimmer {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes landing-grow {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes landing-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-landing-float {
+  animation: landing-float 6s ease-in-out infinite;
+}
+
+.animate-landing-fade-up {
+  animation: landing-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-landing-glow {
+  animation: landing-glow 4s ease-in-out infinite;
+}
+
+.animate-landing-marquee {
+  animation: landing-marquee 28s linear infinite;
+}
+
+.animate-landing-shimmer {
+  animation: landing-shimmer 2s ease-in-out infinite;
+}
+
+.animate-landing-grow {
+  animation: landing-grow 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-landing-gradient-text {
+  background-size: 200% auto;
+  animation: landing-gradient 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-landing-float,
+  .animate-landing-fade-up,
+  .animate-landing-glow,
+  .animate-landing-marquee,
+  .animate-landing-shimmer,
+  .animate-landing-grow,
+  .animate-landing-gradient-text {
+    animation: none;
+  }
+}

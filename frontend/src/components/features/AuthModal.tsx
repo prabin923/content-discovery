@@ -9,11 +9,12 @@ import { ApiError } from '../../lib/api';
 interface Props {
   open: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 type Mode = 'login' | 'register';
 
-export default function AuthModal({ open, onClose }: Props) {
+export default function AuthModal({ open, onClose, onSuccess }: Props) {
   const { login, register } = useAuth();
   const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
@@ -36,7 +37,11 @@ export default function AuthModal({ open, onClose }: Props) {
       } else {
         await register(email, username, password);
       }
-      onClose();
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        onClose();
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Something went wrong');
     } finally {

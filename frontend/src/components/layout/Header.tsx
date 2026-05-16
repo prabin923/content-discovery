@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Button from '../common/Button';
 import ThemeToggle from '../common/ThemeToggle';
 import { useAuth } from '../../hooks/useAuth';
@@ -26,7 +27,11 @@ export default function Header({ activeTab, onTabChange, onOpenAuth }: Props) {
   return (
     <header className="mb-8 flex flex-col gap-4 border-b border-slate-200 pb-6 dark:border-slate-800 md:flex-row md:items-center md:justify-between">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 md:text-4xl">Discovery Hub</h1>
+        <Link href="/" className="group inline-block">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-400 md:text-4xl">
+            Discovery Hub
+          </h1>
+        </Link>
         <p className="mt-1 text-slate-600 dark:text-slate-400">Videos, products, and research in one place.</p>
       </div>
 
