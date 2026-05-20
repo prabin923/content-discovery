@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import type { ContentItem } from '@discovery-hub/shared';
 import { apiRequest, ApiError } from '../lib/api';
+import { getErrorMessage } from '../lib/errors';
 import { ensureContentId } from '../lib/content-actions';
 import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../lib/toast';
@@ -31,9 +32,11 @@ export default function ContentCard({
   const [collectionOpen, setCollectionOpen] = useState(false);
   const [resolvedItem, setResolvedItem] = useState(item);
   const [busy, setBusy] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
 
   useEffect(() => {
     setResolvedItem(item);
+    setImageFailed(false);
   }, [item]);
 
   useEffect(() => {
@@ -77,7 +80,7 @@ export default function ContentCard({
       if (err instanceof ApiError && err.status === 401) {
         onRequireAuth?.();
       }
-      showToast((err as Error).message, 'error');
+      showToast(getErrorMessage(err), 'error');
     } finally {
       setBusy(false);
     }
@@ -100,7 +103,7 @@ export default function ContentCard({
   return (
     <>
       <article className="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-        {resolvedItem.thumbnailUrl ? (
+        {resolvedItem.thumbnailUrl && !imageFailed ? (
           <div className="relative mb-3 h-40 w-full overflow-hidden rounded-lg">
             <Image
               src={resolvedItem.thumbnailUrl}
@@ -109,6 +112,7 @@ export default function ContentCard({
               unoptimized
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 33vw"
+              onError={() => setImageFailed(true)}
             />
           </div>
         ) : (
@@ -131,7 +135,7 @@ export default function ContentCard({
 
         <div className="mt-auto space-y-2">
           <div className="flex flex-wrap gap-1">
-            {resolvedItem.tags.slice(0, 2).map((tag) => (
+            {(resolvedItem.tags ?? []).slice(0, 2).map((tag) => (
               <span
                 key={tag}
                 className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300"

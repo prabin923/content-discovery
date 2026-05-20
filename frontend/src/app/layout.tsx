@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'Discovery Hub — Videos, products & research in one place',
   description:
     'Discover YouTube videos, Product Hunt launches, and arXiv papers. Save, curate collections, and get a personalized For You feed.',
+
 };
 
 const themeInitScript = `

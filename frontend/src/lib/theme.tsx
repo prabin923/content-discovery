@@ -107,6 +107,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
           method: 'PATCH',
           auth: true,
           body: JSON.stringify({ theme: next }),
+        }).catch(() => {
+          // Theme still applies locally if preference sync fails
         });
       }
     },

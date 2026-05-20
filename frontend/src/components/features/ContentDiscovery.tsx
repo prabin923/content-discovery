@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ContentItem, DiscoverMode, DiscoverResponse, DiscoverSource, SearchResponse } from '@discovery-hub/shared';
 import { apiRequest } from '../../lib/api';
+import { getErrorMessage } from '../../lib/errors';
 import { mapDbRowToContentItem } from '../../lib/content';
 import ContentCard from '../ContentCard';
 import ContentCardSkeleton from '../common/ContentCardSkeleton';
@@ -113,7 +114,7 @@ export default function ContentDiscovery({ onRequireAuth }: Props) {
         await runLiveSearch();
       }
     } catch (err) {
-      setError((err as Error).message);
+      setError(getErrorMessage(err));
       setItems([]);
       setSourceErrors([]);
     } finally {
@@ -122,9 +123,19 @@ export default function ContentDiscovery({ onRequireAuth }: Props) {
   }, [mode, runLibrarySearch, runLiveSearch]);
 
   useEffect(() => {
-    void runSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [source, mode, page]);
+    let cancelled = false;
+
+    runSearch().catch((err) => {
+      if (!cancelled) {
+        setError(getErrorMessage(err));
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [runSearch, source, mode, page]);
 
   const onModeChange = (next: DiscoverMode) => {
     setMode(next);
@@ -145,7 +156,7 @@ export default function ContentDiscovery({ onRequireAuth }: Props) {
         onModeChange={onModeChange}
         onSubmit={() => {
           setPage(1);
-          void runSearch();
+          runSearch().catch((err) => setError(getErrorMessage(err)));
         }}
         onPageChange={setPage}
       />
