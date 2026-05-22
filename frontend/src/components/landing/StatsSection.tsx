@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import AnimateIn from './AnimateIn';
 import { useInView } from '@/hooks/useInView';
@@ -8,9 +9,7 @@ function useCountUp(target: number, active: boolean, duration = 1400) {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    if (!active) {
-      return;
-    }
+    if (!active) return;
 
     const start = performance.now();
     let frame = 0;
@@ -19,9 +18,7 @@ function useCountUp(target: number, active: boolean, duration = 1400) {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - (1 - progress) ** 3;
       setValue(Math.round(target * eased));
-      if (progress < 1) {
-        frame = requestAnimationFrame(tick);
-      }
+      if (progress < 1) frame = requestAnimationFrame(tick);
     };
 
     frame = requestAnimationFrame(tick);
@@ -34,7 +31,7 @@ function useCountUp(target: number, active: boolean, duration = 1400) {
 const stats = [
   { label: 'Content types', value: 3, suffix: '', detail: 'Videos, products & papers' },
   { label: 'Live sources', value: 3, suffix: '+', detail: 'YouTube, PH, arXiv APIs' },
-  { label: 'Library search', value: 50, suffix: '+', detail: 'Results per page, paginated' },
+  { label: 'Library results', value: 50, suffix: '+', detail: 'Per page, paginated' },
   { label: 'Feed signals', value: 4, suffix: '', detail: 'Tags, saves, views & embeddings' },
 ];
 
@@ -42,11 +39,25 @@ export default function StatsSection() {
   const { ref, inView } = useInView<HTMLElement>();
 
   return (
-    <section ref={ref} className="px-4 py-16">
-      <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
-          <StatCard key={stat.label} stat={stat} index={index} active={inView} />
-        ))}
+    <section ref={ref} className="py-20 md:py-24">
+      <div className="landing-container">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <AnimateIn>
+            <p className="landing-eyebrow">By the numbers</p>
+            <h2 className="landing-heading mt-3 max-w-md">Numbers that reflect real discovery</h2>
+          </AnimateIn>
+          <AnimateIn delay={60}>
+            <Link href="/app" className="btn-scalora-primary shrink-0 self-start">
+              Get started free
+            </Link>
+          </AnimateIn>
+        </div>
+
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <StatCard key={stat.label} stat={stat} index={index} active={inView} />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -65,13 +76,13 @@ function StatCard({
 
   return (
     <AnimateIn delay={index * 100} className="h-full">
-      <div className="group h-full rounded-2xl border border-slate-200 bg-white p-6 text-center transition hover:-translate-y-1 hover:border-indigo-300 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:hover:border-indigo-600">
-        <p className="text-4xl font-bold tabular-nums text-indigo-600 dark:text-indigo-400">
+      <div className="landing-card h-full p-6 transition hover:-translate-y-1">
+        <p className="text-4xl font-bold tabular-nums text-zinc-900 dark:text-zinc-50">
           {count}
           {stat.suffix}
         </p>
-        <p className="mt-2 font-semibold text-slate-900 dark:text-slate-100">{stat.label}</p>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{stat.detail}</p>
+        <p className="mt-3 font-semibold text-zinc-900 dark:text-zinc-100">{stat.label}</p>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">{stat.detail}</p>
       </div>
     </AnimateIn>
   );

@@ -25,28 +25,28 @@ export default function Header({ activeTab, onTabChange, onOpenAuth }: Props) {
   const { user, logout, loading } = useAuth();
 
   return (
-    <header className="mb-8 flex flex-col gap-4 border-b border-slate-200 pb-6 dark:border-slate-800 md:flex-row md:items-center md:justify-between">
+    <header className="mb-8 flex flex-col gap-4 border-b border-zinc-200 pb-6 dark:border-zinc-800 md:flex-row md:items-center md:justify-between">
       <div>
         <Link href="/" className="group inline-block">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-400 md:text-4xl">
-            Discovery Hub
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 group-hover:text-emerald-600 dark:text-zinc-100 dark:group-hover:text-emerald-400 md:text-3xl">
+            Discovery <span className="text-emerald-600 dark:text-emerald-400">Hub</span>
           </h1>
         </Link>
-        <p className="mt-1 text-slate-600 dark:text-slate-400">Videos, products, and research in one place.</p>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Videos, products, and research in one place.</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
         <ThemeToggle />
-        <nav className="flex flex-wrap rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
+        <nav className="flex flex-wrap rounded-full border border-zinc-200 bg-zinc-100/80 p-1 dark:border-zinc-700 dark:bg-zinc-800/80">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               type="button"
               onClick={() => onTabChange(tab.id)}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
+              className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
                 activeTab === tab.id
-                  ? 'bg-white text-indigo-700 shadow-sm dark:bg-slate-900 dark:text-indigo-300'
-                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
+                  ? 'bg-zinc-900 text-white shadow-sm dark:bg-white dark:text-zinc-900'
+                  : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'
               }`}
             >
               {tab.label}
@@ -55,18 +55,20 @@ export default function Header({ activeTab, onTabChange, onOpenAuth }: Props) {
         </nav>
 
         {loading ? (
-          <span className="text-sm text-slate-500">Loading…</span>
+          <span className="text-sm text-zinc-500">Loading…</span>
         ) : user ? (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-700 dark:text-slate-300">
+            <span className="text-sm text-zinc-700 dark:text-zinc-300">
               Hi, <strong>{user.username}</strong>
             </span>
-            <Button variant="ghost" onClick={logout}>
+            <Button variant="ghost" onClick={logout} className="rounded-full dark:hover:bg-zinc-800">
               Sign out
             </Button>
           </div>
         ) : (
-          <Button onClick={onOpenAuth}>Sign in</Button>
+          <Button onClick={onOpenAuth} className="rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100">
+            Sign in
+          </Button>
         )}
       </div>
     </header>

@@ -3,8 +3,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-surface: #f8fafc;
+  --color-surface: #f5f5f0;
   --color-surface-elevated: #ffffff;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 .dark {
@@ -12,7 +13,7 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+  @apply bg-[#f5f5f0] text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50;
 }
 
 /* Landing page animations */
@@ -22,30 +23,18 @@ body {
     transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(-14px) scale(1.02);
+    transform: translateY(-10px) scale(1.01);
   }
 }
 
 @keyframes landing-fade-up {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes landing-glow {
-  0%,
-  100% {
-    opacity: 0.35;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.55;
-    transform: scale(1.03);
   }
 }
 
@@ -58,73 +47,93 @@ body {
   }
 }
 
-@keyframes landing-shimmer {
-  0% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.6;
-  }
-}
-
 @keyframes landing-grow {
   from {
     width: 0;
   }
 }
 
-@keyframes landing-gradient {
-  0% {
-    background-position: 0% 50%;
+@keyframes hero-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
-  50% {
-    background-position: 100% 50%;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  100% {
-    background-position: 0% 50%;
+}
+
+@keyframes hero-word-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-16px);
   }
 }
 
 .animate-landing-float {
-  animation: landing-float 6s ease-in-out infinite;
+  animation: landing-float 5s ease-in-out infinite;
 }
 
 .animate-landing-fade-up {
-  animation: landing-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.animate-landing-glow {
-  animation: landing-glow 4s ease-in-out infinite;
+  animation: landing-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-landing-marquee {
-  animation: landing-marquee 28s linear infinite;
-}
-
-.animate-landing-shimmer {
-  animation: landing-shimmer 2s ease-in-out infinite;
+  animation: landing-marquee 32s linear infinite;
 }
 
 .animate-landing-grow {
   animation: landing-grow 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.animate-landing-gradient-text {
-  background-size: 200% auto;
-  animation: landing-gradient 4s linear infinite;
+.animate-hero-word-in {
+  animation: hero-word-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-hero-word-out {
+  animation: hero-word-out 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.landing-container {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+}
+
+.landing-eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400;
+}
+
+.landing-heading {
+  @apply text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-4xl md:text-[2.75rem] md:leading-[1.15];
+}
+
+.landing-subheading {
+  @apply text-base leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-lg;
+}
+
+.btn-scalora-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-zinc-800 active:scale-[0.98] dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100;
+}
+
+.btn-scalora-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:border-zinc-400 hover:bg-zinc-50 active:scale-[0.98] dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800;
+}
+
+.landing-card {
+  @apply rounded-2xl border border-zinc-200/90 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.04)] dark:border-zinc-800 dark:bg-zinc-900;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-landing-float,
   .animate-landing-fade-up,
-  .animate-landing-glow,
   .animate-landing-marquee,
-  .animate-landing-shimmer,
   .animate-landing-grow,
-  .animate-landing-gradient-text {
+  .animate-hero-word-in,
+  .animate-hero-word-out {
     animation: none;
   }
 }

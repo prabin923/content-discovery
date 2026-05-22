@@ -29,31 +29,29 @@ export default function HowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      className="border-t border-slate-200 bg-slate-100/50 px-4 py-28 dark:border-slate-800 dark:bg-slate-900/50 md:py-32"
+      className="border-t border-zinc-200/80 bg-white py-24 dark:border-zinc-800 dark:bg-zinc-900 md:py-28"
     >
-      <div className="mx-auto max-w-5xl">
+      <div className="landing-container">
         <AnimateIn className="mb-16 text-center md:mb-20">
-          <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-            Getting started
-          </p>
-          <h2 className="mt-3 text-3xl font-bold text-slate-900 dark:text-slate-100 sm:text-4xl">How it works</h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+          <p className="landing-eyebrow">Getting started</p>
+          <h2 className="landing-heading mt-3">How it works</h2>
+          <p className="landing-subheading mx-auto mt-4 max-w-xl">
             From signup to a personalized feed in four simple steps.
           </p>
         </AnimateIn>
 
-        <ol className="grid list-none gap-8 sm:gap-10 md:grid-cols-2 md:gap-x-10 md:gap-y-12 lg:gap-x-12 lg:gap-y-14">
+        <ol className="grid list-none gap-6 sm:grid-cols-2 lg:gap-8">
           {steps.map((item, index) => (
             <AnimateIn key={item.step} delay={index * 80} className="h-full">
               <li className="h-full">
-                <article className="flex h-full flex-col rounded-2xl border border-slate-200/80 bg-white p-8 shadow-sm transition hover:shadow-md dark:border-slate-700/80 dark:bg-slate-900 md:p-9">
-                  <span className="mb-6 inline-flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 text-sm font-bold text-white shadow-md">
+                <article className="landing-card flex h-full flex-col p-8 transition hover:-translate-y-1">
+                  <span className="mb-6 inline-flex h-10 w-10 items-center justify-center rounded-full bg-zinc-900 text-sm font-bold text-white dark:bg-white dark:text-zinc-900">
                     {item.step}
                   </span>
-                  <h3 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+                  <h3 className="text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
                     {item.title}
                   </h3>
-                  <p className="mt-4 flex-1 text-base leading-relaxed text-slate-600 dark:text-slate-400">
+                  <p className="mt-4 flex-1 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
                     {item.body}
                   </p>
                 </article>

@@ -4,43 +4,71 @@ import AnimateIn from './AnimateIn';
 
 const testimonials = [
   {
+    badge: 'Unified discover',
     quote:
-      'I used to keep seventeen tabs open for YouTube, PH, and arXiv. Discovery Hub cut that to one search bar and a library I can actually query again.',
-    name: 'Jordan Lee',
-    role: 'Indie hacker',
+      'Before this, our team kept seventeen tabs open for YouTube, PH, and arXiv. Now discovery launches, saves, and improves in one workspace.',
+    name: 'Daniel Reed',
+    role: 'Founder, BrightLayer Digital',
+    stats: [
+      { value: '52%', label: 'More content saved' },
+      { value: '3.4x', label: 'Faster research' },
+    ],
   },
   {
+    badge: 'For You feed',
     quote:
-      'The collections + upvote flow turned our team reading list into something people actually maintain. Public lists beat another Notion doc.',
-    name: 'Samira Patel',
-    role: 'Engineering lead',
+      'Our reading list used to be cluttered with low-signal links. Now we know what matters before we even open another tab.',
+    name: 'Mezei Ágnes',
+    role: 'VP Research, CloudMetric',
+    stats: [
+      { value: '38%', label: 'Higher save quality' },
+      { value: '31%', label: 'More list variations' },
+    ],
   },
   {
+    badge: 'Collections',
     quote:
-      'Setting interests and watching the For You feed shift after saves feels like the product is paying attention—without a black-box algorithm.',
-    name: 'Alex Chen',
-    role: 'ML researcher',
+      'Curating at scale felt unrealistic with our team size. Public collections and upvotes keep everyone aligned without extra docs.',
+    name: 'Surány Izabella',
+    role: 'Head of Content, NovaCart',
+    stats: [
+      { value: '47%', label: 'More engaged lists' },
+      { value: '31%', label: 'Shorter curation cycles' },
+    ],
   },
 ];
 
 export default function TestimonialsSection() {
   return (
-    <section className="px-4 py-24">
-      <div className="mx-auto max-w-6xl">
-        <AnimateIn className="mb-12 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Loved by curious builders</h2>
-          <p className="mt-3 text-slate-600 dark:text-slate-400">How teams and individuals use Discovery Hub day to day.</p>
+    <section className="border-t border-zinc-200/80 bg-[#f5f5f0] py-24 dark:border-zinc-800 dark:bg-zinc-950 md:py-28">
+      <div className="landing-container">
+        <AnimateIn className="text-center">
+          <p className="landing-eyebrow">Testimonial</p>
+          <h2 className="landing-heading mt-3">Trusted by teams that think in systems</h2>
         </AnimateIn>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
           {testimonials.map((item, index) => (
-            <AnimateIn key={item.name} delay={index * 120}>
-              <blockquote className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-900">
-                <p className="flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">&ldquo;{item.quote}&rdquo;</p>
-                <footer className="mt-6 border-t border-slate-100 pt-4 dark:border-slate-800">
-                  <p className="font-semibold text-slate-900 dark:text-slate-100">{item.name}</p>
-                  <p className="text-xs text-slate-500">{item.role}</p>
+            <AnimateIn key={item.name} delay={index * 100}>
+              <blockquote className="landing-card flex h-full flex-col p-6">
+                <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                  {item.badge}
+                </span>
+                <p className="mt-4 flex-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  &ldquo;{item.quote}&rdquo;
+                </p>
+                <footer className="mt-6 border-t border-zinc-100 pt-5 dark:border-zinc-800">
+                  <p className="font-semibold text-zinc-900 dark:text-zinc-100">{item.name}</p>
+                  <p className="text-xs text-zinc-500">{item.role}</p>
                 </footer>
+                <div className="mt-5 grid grid-cols-2 gap-4">
+                  {item.stats.map((s) => (
+                    <div key={s.label}>
+                      <p className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{s.value}</p>
+                      <p className="mt-0.5 text-[10px] text-zinc-500">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
               </blockquote>
             </AnimateIn>
           ))}

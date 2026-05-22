@@ -29,7 +29,7 @@ export default function AppPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8 dark:bg-slate-950">
+    <main className="min-h-screen bg-[#f5f5f0] px-4 py-8 dark:bg-zinc-950">
       <section className="mx-auto max-w-6xl">
         <Header activeTab={tab} onTabChange={handleTabChange} onOpenAuth={openAuth} />
 
